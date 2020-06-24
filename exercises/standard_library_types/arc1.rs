@@ -4,17 +4,17 @@
 // somewhere. Try not to create any copies of the `numbers` Vec!
 // Execute `rustlings hint arc1` for hints :)
 
-// I AM NOT DONE
-
 use std::sync::Arc;
 use std::thread;
 
 fn main() {
     let numbers: Vec<_> = (0..100u32).collect();
-    let shared_numbers = // TODO
+    let shared_numbers = &numbers;
     let mut joinhandles = Vec::new();
 
     for offset in 0..8 {
+        let shared_vec: Vec<_>= (0..offset as u32).collect();
+        let mut child_numbers: Arc<Vec<u32>> = Arc::new(shared_vec);
         joinhandles.push(thread::spawn(move || {
             let mut i = offset;
             let mut sum = 0;
