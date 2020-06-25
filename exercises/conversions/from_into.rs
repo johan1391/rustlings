@@ -13,12 +13,12 @@ impl Default for Person {
     fn default() -> Person {
         Person {
             name: String::from("John"),
-            age: 30,
+            age: "30".parse::<usize>().unwrap(),
         }
     }
 }
 
-// I AM NOT DONE
+
 // Your task is to complete this implementation
 // in order for the line `let p = Person::from("Mark,20")` to compile
 // Please note that you'll need to parse the age component into a `usize`
@@ -32,8 +32,30 @@ impl Default for Person {
 // 4. Extract the other element from the split operation and parse it into a `usize` as the age
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person onject with the results
+enum VecType {
+    Str(String),
+    Number(i32),
+}
+
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if *&s.len() as u32 == 0 {
+            return Person::default();
+        }
+        let parts = &s.split(",").collect::<Vec<&str>>();
+
+        if parts.len() as u32 == 2 {
+            let name = &parts[0].to_string();
+            let age = &parts[1].to_string().parse::<usize>();
+
+            let new_person = match age {
+                Ok(a) => Person {age: *age.as_ref().unwrap(), name: name.to_string()},
+                Err(e) => Person::default()
+            };
+            return new_person;
+
+        };
+        return Person::default();
     }
 }
 

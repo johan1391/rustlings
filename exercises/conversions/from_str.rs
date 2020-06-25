@@ -7,10 +7,9 @@ use std::str::FromStr;
 #[derive(Debug)]
 struct Person {
     name: String,
-    age: usize,
+    age: usize
 }
 
-// I AM NOT DONE
 // Steps:
 // 1. If the length of the provided string is 0, then return an error
 // 2. Split the given string on the commas present in it
@@ -21,6 +20,19 @@ struct Person {
 impl FromStr for Person {
     type Err = String;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.len() == 0 {
+            return Err("NO".to_string());
+        };
+        let parts = &s.split(",").collect::<Vec<&str>>();
+        let name = &parts[0].to_string();
+        let age = &parts[1].to_string().parse::<usize>();
+
+
+        match age {
+            Ok(age) => Ok(Person {age: *age, name: name.to_string()}),
+            Err(_) => Err("NO".to_string())
+        }
+
     }
 }
 
